@@ -12,7 +12,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Build image
-        run: docker build -t fil-language/testing testing/
+        run: docker build -t ghcr.io/fil-language/testing:latest testing/
       - name: Log into ghcr.io
         run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u fil-language --password-stdin
       - name: Publish image
