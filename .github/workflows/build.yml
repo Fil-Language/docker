@@ -14,6 +14,6 @@ jobs:
       - name: Build image
         run: docker build -t fil-language/testing testing/
       - name: Log into ghcr.io
-        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u fil-language --password-stdin
       - name: Publish image
         run: docker push ghcr.io/fil-language/testing:latest
