@@ -1,0 +1,19 @@
+name: Docker build
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build-testing:
+    name: Build testing image
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build image
+        run: docker build -t fil-language/testing testing/
+      - name: Log into ghcr.io
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+      - name: Publish image
+        run: docker push ghcr.io/fil-language/testing:latest
