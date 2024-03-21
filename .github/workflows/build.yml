@@ -17,3 +17,20 @@ jobs:
         run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u fil-language --password-stdin
       - name: Publish image
         run: docker push ghcr.io/fil-language/testing:latest
+
+  check-testing:
+    name: Check testing image
+    runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/fil-language/testing:latest
+    needs:
+      - build-testing
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          repository: fil-language/filc
+      - name: Run tests
+        run: |
+          cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=Debug -DBUILD_TESTING=ON -DCODE_COVERAGE=ON
+          cmake --build ${{github.workspace}}/build --target unit-tests
+          cd ${{github.workspace}}/build && ctest -L unit
