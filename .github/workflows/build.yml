@@ -34,3 +34,31 @@ jobs:
           cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=Debug -DBUILD_TESTING=ON -DCODE_COVERAGE=ON
           cmake --build ${{github.workspace}}/build --target unit-tests
           cd ${{github.workspace}}/build && ctest -L unit --output-on-failure
+
+  build-building:
+    name: Build building image
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build image
+        run: docker build -t ghcr.io/fil-language/building:latest building/
+      - name: Log into ghcr.io
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u fil-language --password-stdin
+      - name: Publish image
+        run: docker push ghcr.io/fil-language/building:latest
+
+  check-building:
+    name: Check building image
+    runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/fil-language/building:latest
+    needs:
+      - build-building
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          repository: fil-language/filc
+      - name: Run build
+        run: |
+          cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=Release
+          cmake --build ${{github.workspace}}/build
