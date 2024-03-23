@@ -33,4 +33,4 @@ jobs:
         run: |
           cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=Debug -DBUILD_TESTING=ON -DCODE_COVERAGE=ON
           cmake --build ${{github.workspace}}/build --target unit-tests
-          cd ${{github.workspace}}/build && ctest -L unit
+          cd ${{github.workspace}}/build && ctest -L unit --output-on-failure
