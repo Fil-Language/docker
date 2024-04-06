@@ -31,9 +31,9 @@ jobs:
           repository: fil-language/filc
       - name: Run tests
         run: |
-          cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=Debug -DBUILD_TESTING=ON -DCODE_COVERAGE=ON
-          cmake --build ${{github.workspace}}/build --target unit-tests
-          cd ${{github.workspace}}/build && ctest -L unit --output-on-failure
+          cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=Debug -DBUILD_TESTING=ON -DCODE_COVERAGE=ON -G Ninja
+          cmake --build ${{github.workspace}}/build
+          cd ${{github.workspace}}/build && ctest --output-on-failure
 
   build-building:
     name: Build building image
