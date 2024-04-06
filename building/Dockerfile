@@ -1,5 +1,4 @@
 # syntax=docker/dockerfile:1
-FROM alpine:latest
-RUN apk update && \
-    apk upgrade && \
-    apk add git cmake make g++ openjdk17-jre llvm15-dev llvm15-static;
+FROM ubuntu:jammy
+RUN apt update && apt upgrade -y && \
+    apt install -y git cmake ninja-build g++ openjdk-17-jre llvm-15-dev zlib1g-dev
